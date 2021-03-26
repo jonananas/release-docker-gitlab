@@ -36,21 +36,22 @@ def get_gitlabci_ver(filename = ".gitlab-ci.yml") -> str:
 
 def git_commit(commit_message):
     repo = Repo()
-    print("git commit -m " + commit_message)
-    repo.commit(commit_message)
+    #print("git commit -m " + commit_message)
+    repo.index.add([".env", ".gitlab-ci.yml"])
+    repo.index.commit(commit_message)
 
-def main():
+def release():
     curr_ver = get_env_ver()
     ci_pattern = get_gitlabci_ver()
     next_ver = curr_ver.next_patch()
     release_ver = curr_ver.release()
-    input(f"Releasing {release_ver} with nextver {next_ver} and ci_pattern {ci_pattern}, ok?")
+    input(f"Releasing {release_ver} with nextver {next_ver}, next .gitlab-ci {ci_pattern}, ok?")
 
     set_env_ver(release_ver)
     set_gitlabci_ver(release_ver.__str__())
-    git_commit("Release {release_ver}")
+    git_commit(f"Release {release_ver}")
     set_env_ver(next_ver)
     set_gitlabci_ver(ci_pattern)
-    git_commit("Next snapshot version {next_ver}")
+    git_commit(f"Next snapshot version {next_ver}")
 
-main()
+release()

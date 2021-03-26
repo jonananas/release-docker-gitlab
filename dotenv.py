@@ -2,7 +2,7 @@ from fileio import FileIO
 
 class DotEnv:
     def __init__(self):
-        fileio: FileIO = FileIO()
+        self.fileio: FileIO = FileIO()
 
     def read(self, filename: str) -> dict:
         res = dict()

@@ -33,9 +33,9 @@ def set_env_ver(ver: SemVer, filename=".env"):
 def get_env_ver(filename=".env") -> SemVer:
     dotenv = DotEnv()
     envdict = dotenv.read(filename)
-    return envdict['DOCKER_IMAGE_TAG']
+    return SemVer(envdict['DOCKER_IMAGE_TAG'])
 
-def set_gitlabci_ver(ver: SemVer, filename = ".gitlab-ci.yml"):
+def set_gitlabci_ver(ver: str, filename = ".gitlab-ci.yml"):
     yaml = YAML()
     # Settings to preserve yaml file format when writing
     yaml.default_flow_style = False
@@ -49,28 +49,27 @@ def set_gitlabci_ver(ver: SemVer, filename = ".gitlab-ci.yml"):
     with open(filename, 'w') as file:
         yaml.dump(gitlab_ci, file)
 
-def get_gitlabci_ver() -> str:
+def get_gitlabci_ver(filename = ".gitlab-ci.yml") -> str:
     yaml = YAML()
-    with open("/Users/jonas/projects/demonstrator/.gitlab-ci.yml") as file:
+    with open(filename) as file:
         gitlab_ci = yaml.load(file)
     return gitlab_ci['variables']['DOCKER_IMAGE_TAG']
 
 def git_commit(commit_message):
     print("NOT_IMPL:" + commit_message)
 
-def lets_go():
+def main():
     curr_ver = get_env_ver()
-    ci_pattern = get_gitlabci_ver
+    ci_pattern = get_gitlabci_ver()
     next_ver = curr_ver.next_patch()
     release_ver = curr_ver.release()
-    input("Releasing {release_ver}, ok?")
-
+    input(f"Releasing {release_ver} with nextver {next_ver} and ci_pattern {ci_pattern}, ok?")
 
     set_env_ver(release_ver)
-    set_gitlabci_ver(release_ver)
+    set_gitlabci_ver(release_ver.__str__())
     git_commit("Release {release_ver}")
     set_env_ver(next_ver)
     set_gitlabci_ver(ci_pattern)
     git_commit("Next snapshot version {next_ver}")
 
-
+main()

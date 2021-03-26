@@ -1,28 +1,7 @@
 from dotenv import DotEnv
 from ruamel.yaml import YAML
 from semver import SemVer
-"""
-1. Get current ver from .env
-2. Propose release-ver and next-snapshot - semver-match
-3. Update .env to release-ver
-4. Update .gitlab-ci to release-ver
-5. git commit
-6. update to next-snapshot
-7. git commit
-
-
-NEWTAG=$1
-NEXTTAG=$2
-echo Releasing $NEWTAG, $NEXTTAG-SNAPSHOT is next
-perl -i -pe"s/DOCKER_IMAGE_TAG=[^-]*-SNAPSHOT/DOCKER_IMAGE_TAG=$NEWTAG/g" .env || exit -1
-git commit -m "Release $NEWTAG" .env || exit -1
-git tag $NEWTAG || exit -1
-perl -i -pe"s/DOCKER_IMAGE_TAG=[^\s]*/DOCKER_IMAGE_TAG=$NEXTTAG-SNAPSHOT/g" .env || exit -1
-git commit -m "Next snapshot version $NEXTTAG-SNAPSHOT" .env || exit -1
-echo To publish, do:
-echo git push
-echo git push origin $NEWTAG
-"""
+from git import Repo
 
 def set_env_ver(ver: SemVer, filename=".env"):
     dotenv = DotEnv()
@@ -56,7 +35,9 @@ def get_gitlabci_ver(filename = ".gitlab-ci.yml") -> str:
     return gitlab_ci['variables']['DOCKER_IMAGE_TAG']
 
 def git_commit(commit_message):
-    print("NOT_IMPL:" + commit_message)
+    repo = Repo()
+    print("git commit -m " + commit_message)
+    repo.commit(commit_message)
 
 def main():
     curr_ver = get_env_ver()

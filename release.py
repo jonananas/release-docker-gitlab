@@ -32,7 +32,7 @@ def set_env_ver(ver: SemVer, filename=".env"):
     envdict['DOCKER_IMAGE_TAG'] = ver
     dotenv.write(".env", envdict)
 
-def get_env_ver(filename=".env"):
+def get_env_ver(filename=".env") -> SemVer:
     dotenv = DotEnv()
     envdict = dotenv.read(filename)
     return envdict['DOCKER_IMAGE_TAG']
@@ -51,10 +51,25 @@ def set_gitlabci_ver(ver: SemVer, filename = ".gitlab-ci.yml"):
     with open(filename, 'w') as file:
         yaml.dump(gitlab_ci, file)
 
-def get_gitlabci_ver():
+def get_gitlabci_ver() -> str:
     yaml = YAML()
     with open("/Users/jonas/projects/demonstrator/.gitlab-ci.yml") as file:
         gitlab_ci = yaml.load(file)
     return gitlab_ci['variables']['DOCKER_IMAGE_TAG']
 
 def lets_go():
+    curr_ver = get_env_ver()
+    ci_pattern = get_gitlabci_ver
+    next_ver = curr_ver.next_patch()
+    release_ver = curr_ver.release()
+    print("Releasing {release_ver}, ok?")
+    
+
+    set_env_ver(release_ver)
+    set_gitlabci_ver(release_ver)
+    git_commit("Release {release_ver}")
+    set_env_ver(next_ver)
+    set_gitlabci_ver(ci_pattern)
+    git_commit("Next snapshot version {next_ver}")
+
+

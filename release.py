@@ -1,5 +1,6 @@
 from dotenv import DotEnv
-from  ruamel.yaml import YAML
+from ruamel.yaml import YAML
+from semver import SemVer
 """
 1. Get current ver from .env
 2. Propose release-ver and next-snapshot - semver-match
@@ -22,9 +23,6 @@ echo To publish, do:
 echo git push
 echo git push origin $NEWTAG
 """
-
-class SemVer:
-    None
 
 def set_env_ver(ver: SemVer, filename=".env"):
     dotenv = DotEnv()
@@ -57,13 +55,16 @@ def get_gitlabci_ver() -> str:
         gitlab_ci = yaml.load(file)
     return gitlab_ci['variables']['DOCKER_IMAGE_TAG']
 
+def git_commit(commit_message):
+    print("NOT_IMPL:" + commit_message)
+
 def lets_go():
     curr_ver = get_env_ver()
     ci_pattern = get_gitlabci_ver
     next_ver = curr_ver.next_patch()
     release_ver = curr_ver.release()
-    print("Releasing {release_ver}, ok?")
-    
+    input("Releasing {release_ver}, ok?")
+
 
     set_env_ver(release_ver)
     set_gitlabci_ver(release_ver)

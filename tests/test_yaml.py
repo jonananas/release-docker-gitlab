@@ -1,12 +1,13 @@
 import yaml
-from  ruamel.yaml import YAML
+from ruamel.yaml import YAML
+from os import remove
 
-def test_yaml_read():
+def skip_test_yaml_read():
     with open("/Users/jonas/projects/demonstrator/.gitlab-ci.yml") as file:
         gitlab_ci = yaml.load(file)
     assert gitlab_ci['variables']['DOCKER_IMAGE_TAG'] == "${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}"
 
-def test_that_yaml_writes():
+def skip_test_that_yaml_writes():
     with open("/Users/jonas/projects/demonstrator/.gitlab-ci.yml") as file:
         gitlab_ci = yaml.load(file)
     gitlab_ci['variables']['DOCKER_IMAGE_TAG'] = "0.0.1"
@@ -16,7 +17,7 @@ def test_that_yaml_writes():
 
 # Below settings makes only the required setting change
 # diff ../demonstrator/.gitlab-ci.yml ruamel_yaml-result.yml
-def test_that_ruamel_yaml_writes():
+def skip_test_that_ruamel_yaml_writes():
     yaml = YAML()
     yaml.default_flow_style = False
 #    yaml.explicit_start = True

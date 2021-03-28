@@ -1,5 +1,4 @@
 
-
 class FileIO:
     def readlines(self, filename: str) -> list[str]:
         with open(filename, "r") as file:

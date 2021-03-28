@@ -36,3 +36,11 @@ class SemVer:
     def __str__(self):
         extra = self.extra if self.extra else ""
         return f"{self.major}.{self.minor}.{self.patch}{extra}"
+
+    def str(self):
+        return self.__str__()
+
+    def __eq__(self, other):
+        if isinstance(other, SemVer):
+            return self.__str__() == other.__str__()
+        return False

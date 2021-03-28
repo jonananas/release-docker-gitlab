@@ -61,9 +61,9 @@ def release():
     input(f"Continue? Any/Ctrl-Break")
 
     set_env_ver(release_ver)
-    set_gitlabci_ver(str(release_ver))
+    set_gitlabci_ver(release_ver.str())
     git_commit(f"Release {release_ver}")
-    git_tag(str(release_ver))
+    git_tag(release_ver.str())
 
     set_env_ver(next_ver)
     set_gitlabci_ver(ci_tag)

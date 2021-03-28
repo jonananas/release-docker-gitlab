@@ -37,6 +37,6 @@ class TestDotEnv:
 
     def mock_fileio_return(self, contents, mocker):
         fileio_mock: FileIO = mocker.Mock()
-        DotEnv.fileio = fileio_mock
+        self.sut.fileio = fileio_mock
         fileio_mock.readlines.return_value = contents
         return fileio_mock

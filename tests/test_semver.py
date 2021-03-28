@@ -20,13 +20,24 @@ def test_that_fails_without_major_minor_patch():
         SemVer("0.1")
 
 def test_str():
-    assert str(SemVer("0.1.2-SNAPSHOT")) == "0.1.2-SNAPSHOT"
-    assert str(SemVer("0.1.2")) == "0.1.2"
-    assert str(SemVer("0.1.2-")) == "0.1.2-"
+    assert str(SemVer("0.1.2-SNAPSHOT")) == SemVer("0.1.2-SNAPSHOT").str()
+    assert SemVer("0.1.2-SNAPSHOT").str() == "0.1.2-SNAPSHOT"
+    assert SemVer("0.1.2").str() == "0.1.2"
+    assert SemVer("0.1.2-").str() == "0.1.2-"
 
 def test_next_patch_of_snapshot():
-    assert str(SemVer("0.1.2-SNAPSHOT").next_patch()) == str(SemVer("0.1.3-SNAPSHOT"))
+    assert SemVer("0.1.2-SNAPSHOT").next_patch() == SemVer("0.1.3-SNAPSHOT")
 
 def test_release():
     semver = SemVer("0.1.2-SNAPSHOT")
-    assert str(semver.release()) == "0.1.2"
+    assert semver.release().str() == "0.1.2"
+
+def test_equality():
+    verstr = "0.1.2-SNAPSHOT"
+    semver = SemVer(verstr)
+    same = SemVer("0.1.2-SNAPSHOT")
+    other = SemVer("0.1.2")
+    assert semver == same
+    assert semver != other
+    assert semver != verstr
+    assert semver != None

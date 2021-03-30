@@ -3,16 +3,19 @@ from ruamel.yaml import YAML
 from semver import SemVer
 from git import Repo
 
+
 def set_env_ver(ver: SemVer, filename=".env"):
     dotenv = DotEnv()
     envdict = dotenv.read(filename)
     envdict['DOCKER_IMAGE_TAG'] = ver
     dotenv.write(".env", envdict)
 
+
 def get_env_ver(filename=".env") -> SemVer:
     dotenv = DotEnv()
     envdict = dotenv.read(filename)
     return SemVer(envdict['DOCKER_IMAGE_TAG'])
+
 
 def get_yaml_preserve_config():
     # Settings to preserve a typical .gitlab-ci.yml file as it was
@@ -23,37 +26,53 @@ def get_yaml_preserve_config():
     yaml.width = 512
     return yaml
 
-def set_gitlabci_ver(ver: str, filename = ".gitlab-ci.yml"):
+
+def set_gitlabci_ver(ver: str, filename=".gitlab-ci.yml"):
     yaml = get_yaml_preserve_config()
     with open(filename) as file:
         gitlab_ci = yaml.load(file)
     gitlab_ci['variables']['DOCKER_IMAGE_TAG'] = ver
-    
+
     with open(filename, 'w') as file:
         yaml.dump(gitlab_ci, file)
 
-def get_gitlabci_tag(filename = ".gitlab-ci.yml") -> str:
+
+def get_gitlabci_tag(filename=".gitlab-ci.yml") -> str:
     yaml = YAML()
     with open(filename) as file:
         gitlab_ci = yaml.load(file)
     return gitlab_ci['variables']['DOCKER_IMAGE_TAG']
 
-def git_commit(commit_message:str):
+
+def git_commit(commit_message: str):
     git = Repo()
-    #print("git commit -m " + commit_message)
+    # print("git commit -m " + commit_message)
     git.index.add([".env", ".gitlab-ci.yml"])
     git.index.commit(commit_message)
 
-def git_tag(tag:str):
+
+def git_tag(tag: str):
     git = Repo()
     git.create_tag(tag)
 
+
+def enforce_snapshot_version(curr_ver):
+    if curr_ver.extra != "-SNAPSHOT":
+        raise Exception(f"Release only allowed on snapshot versions, current version is {curr_ver}.")
+
+
+def enforce_master_branch():
+    git = Repo()
+    if str(git.active_branch) != "master":
+        raise Exception(f"Release only allowed from master, current branch is {git.active_branch}.")
+
+
 def release():
     # Add check that
-    # - on master branch
-    # - on snapshot version
     # - nothing uncommitted?
+    enforce_master_branch()
     curr_ver = get_env_ver()
+    enforce_snapshot_version(curr_ver)
     ci_tag = get_gitlabci_tag()
     next_ver = curr_ver.next_patch()
     release_ver = curr_ver.release()
@@ -68,5 +87,6 @@ def release():
     set_env_ver(next_ver)
     set_gitlabci_ver(ci_tag)
     git_commit(f"Next snapshot version {next_ver}")
+
 
 release()

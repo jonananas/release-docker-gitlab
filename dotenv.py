@@ -1,5 +1,6 @@
 from fileio import FileIO
 
+
 class DotEnv:
     def __init__(self):
         self.fileio: FileIO = FileIO()

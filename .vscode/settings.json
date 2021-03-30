@@ -11,4 +11,7 @@
     "python.testing.pytestArgs": [
         "."
     ],
+    "python.linting.pycodestyleEnabled": true,
+    "python.linting.enabled": true,
+    "python.linting.pycodestyleArgs": ["--ignore=E501"]
 }

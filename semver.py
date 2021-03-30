@@ -1,8 +1,9 @@
 from re import search
 
+
 class SemVer:
     
-    def __init__(self, version:str):
+    def __init__(self, version: str):
         # From https://github.com/npm/node-semver/issues/32
         semver = ("^([0-9]+)"                     # major
                 "\.([0-9]+)"                      # minor
@@ -16,10 +17,10 @@ class SemVer:
         self.patch = int(m.group(3))
         self.extra = m.group(4)
 
-    def fromstring(semver:str):
+    def fromstring(semver: str):
         return SemVer(semver)
 
-    def fromparts(major: int, minor:int, patch:int, extra:str = None):
+    def fromparts(major: int, minor: int, patch: int, extra: str = None):
         semver = SemVer("0.0.0")
         semver.major = major
         semver.minor = minor

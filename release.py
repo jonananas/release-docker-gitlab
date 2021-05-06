@@ -61,20 +61,22 @@ def enforce_snapshot_version(curr_ver):
         raise Exception(f"Release only allowed on snapshot versions, current version is {curr_ver}.")
 
 
-def enforce_master_branch():
+def enforce_master_branch_or_release_branch():
     git = Repo()
-    if str(git.active_branch) != "master":
-        raise Exception(f"Release only allowed from master, current branch is {git.active_branch}.")
+    if str(git.active_branch) != "master" and not str(git.active_branch).startswith("release/"):
+        raise Exception(f"Release only allowed from master or release/<ver>, current branch is {git.active_branch}.")
 
 
 def release():
     # Add check that
     # - nothing uncommitted?
-    enforce_master_branch()
+    enforce_master_branch_or_release_branch()
     curr_ver = get_env_ver()
     enforce_snapshot_version(curr_ver)
     ci_tag = get_gitlabci_tag()
     next_ver = curr_ver.next_patch()
+    if ci_tag.startswith(str(curr_ver)):
+        ci_tag = ci_tag.replace(str(curr_ver), str(next_ver))
     release_ver = curr_ver.release()
     print(f"Releasing {release_ver} with nextver {next_ver}, next ci-tag {ci_tag}, ok?")
     input(f"Continue? Any/Ctrl-Break")

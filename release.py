@@ -17,6 +17,19 @@ def get_env_ver(filename=".env") -> SemVer:
     return SemVer(envdict['DOCKER_IMAGE_TAG'])
 
 
+def set_env_latest(ver: SemVer, filename=".env"):
+    dotenv = DotEnv()
+    envdict = dotenv.read(filename)
+    envdict['LATEST_RELEASE'] = ver
+    dotenv.write(".env", envdict)
+
+
+def has_env_latest(filename=".env") -> bool:
+    dotenv = DotEnv()
+    envdict = dotenv.read(filename)
+    return 'LATEST_RELEASE' in envdict
+
+
 def get_yaml_preserve_config():
     # Settings to preserve a typical .gitlab-ci.yml file as it was
     yaml = YAML()
@@ -82,6 +95,8 @@ def release():
     input(f"Continue? Any/Ctrl-Break")
 
     set_env_ver(release_ver)
+    if has_env_latest():
+        set_env_latest(release_ver)
     set_gitlabci_ver(release_ver.str())
     git_commit(f"Release {release_ver}")
     git_tag(release_ver.str())

@@ -2,6 +2,7 @@ from dotenv import DotEnv
 from ruamel.yaml import YAML
 from semver import SemVer
 from git import Repo
+import argparse
 
 
 def set_env_ver(ver: SemVer, filename=".env"):
@@ -80,20 +81,50 @@ def enforce_master_branch_or_release_branch():
         raise Exception(f"Release only allowed from master or release/<ver>, current branch is {git.active_branch}.")
 
 
+def parse_cmdline():
+    description = """Release a GitLab Docker project, ie
+    - From a branch with 
+        - DOCKER_IMAGE_TAG=x.y.z-SNAPSHOT in .env
+        - LAST_IMAGE_TAG=x.y.z in .env
+        - DOCKER_IMAGE_TAG=<any string> in .gitlab-ci.yml
+    - Create a git tag x.y.z with
+        - DOCKER_IMAGE_TAG=x.y.z in .env
+        - LAST_IMAGE_TAG=x.y.z in .env
+        - DOCKER_IMAGE_TAG=x.y.z in .gitlab-ci.yml
+    - Create a following commit with
+        - DOCKER_IMAGE_TAG=x.y.(z+1)-SNAPSHOT in .env
+        - LAST_IMAGE_TAG=x.y.z in .env
+        - DOCKER_IMAGE_TAG=<any string>
+    """
+    parser = argparse.ArgumentParser(description=description, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument('--version',
+                        help='specify the release version')
+    args = parser.parse_args()
+    return args
+
+
 def release():
-    # Add check that
-    # - nothing uncommitted?
+    args = parse_cmdline()
+
+    # Prepare:
+    # TODO: Add warning for something uncommitted?
+    # TODO: Warn or update releaselog?
     enforce_master_branch_or_release_branch()
     curr_ver = get_env_ver()
     enforce_snapshot_version(curr_ver)
+    if args.version is not None:
+        release_ver = SemVer(args.version)
+    else:
+        release_ver = curr_ver.release()
     ci_tag = get_gitlabci_tag()
-    next_ver = curr_ver.next_patch()
     if ci_tag.startswith(str(curr_ver)):
         ci_tag = ci_tag.replace(str(curr_ver), str(next_ver))
-    release_ver = curr_ver.release()
+    next_ver = release_ver.next_patch()
+
     print(f"Releasing {release_ver} with nextver {next_ver}, next ci-tag {ci_tag}, ok?")
     input(f"Continue? Any/Ctrl-Break")
 
+    # Release tag
     set_env_ver(release_ver)
     if has_env_latest():
         set_env_latest(release_ver)
@@ -101,9 +132,11 @@ def release():
     git_commit(f"Release {release_ver}")
     git_tag(release_ver.str())
 
+    # Set next SNAPSHOT
     set_env_ver(next_ver)
     set_gitlabci_ver(ci_tag)
     git_commit(f"Next snapshot version {next_ver}")
+    print(f"Released {release_ver}! To commit, do: git push; git push origin {release_ver}")
 
 
 release()

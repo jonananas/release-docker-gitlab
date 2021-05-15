@@ -107,6 +107,7 @@ def release():
     args = parse_cmdline()
 
     # Prepare:
+    # TODO: https://packaging.python.org/tutorials/packaging-projects/
     # TODO: Add warning for something uncommitted?
     # TODO: Warn or update releaselog?
     enforce_master_branch_or_release_branch()

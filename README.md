@@ -19,6 +19,8 @@ Release a GitLab Docker project, ie
 
 
 # Doing
+- Doing packaging
+    - https://packaging.python.org/tutorials/packaging-projects/
 - Trying to make pytest find tests and modules automatically, ie not by manipulating PYTHONPATH
     - Created src + tests structure - no success
     - Added __init__.py to src - no success

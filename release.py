@@ -117,10 +117,10 @@ def release():
         release_ver = SemVer(args.version)
     else:
         release_ver = curr_ver.release()
+    next_ver = release_ver.next_patch()
     ci_tag = get_gitlabci_tag()
     if ci_tag.startswith(str(curr_ver)):
         ci_tag = ci_tag.replace(str(curr_ver), str(next_ver))
-    next_ver = release_ver.next_patch()
 
     print(f"Releasing {release_ver} with nextver {next_ver}, next ci-tag {ci_tag}, ok?")
     input(f"Continue? Any/Ctrl-Break")

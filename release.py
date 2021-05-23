@@ -118,6 +118,8 @@ def release():
     else:
         release_ver = curr_ver.release()
     next_ver = release_ver.next_patch()
+    # TODO: Ok to set directly or use method? id next_ver.with_extra(curr_ver.extra)
+    next_ver.extra = curr_ver.extra
     ci_tag = get_gitlabci_tag()
     if ci_tag.startswith(str(curr_ver)):
         ci_tag = ci_tag.replace(str(curr_ver), str(next_ver))

@@ -31,7 +31,7 @@ def has_env_latest(filename=".env") -> bool:
     return 'LATEST_RELEASE' in envdict
 
 
-def get_yaml_preserve_config():
+def get_yaml_preserve_config() -> YAML:
     # Settings to preserve a typical .gitlab-ci.yml file as it was
     yaml = YAML()
     yaml.default_flow_style = False
@@ -81,9 +81,9 @@ def enforce_master_branch_or_release_branch():
         raise Exception(f"Release only allowed from master or release/<ver>, current branch is {git.active_branch}.")
 
 
-def parse_cmdline():
+def parse_cmdline() -> argparse.Namespace:
     description = """Release a GitLab Docker project, ie
-    - From a branch with 
+    - From a branch with
         - DOCKER_IMAGE_TAG=x.y.z-SNAPSHOT in .env
         - LAST_IMAGE_TAG=x.y.z in .env
         - DOCKER_IMAGE_TAG=<any string> in .gitlab-ci.yml

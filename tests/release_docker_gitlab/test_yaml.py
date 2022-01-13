@@ -1,6 +1,5 @@
 import yaml
 from ruamel.yaml import YAML
-from os import remove
 
 
 def skip_test_yaml_read():

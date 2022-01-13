@@ -1,6 +1,6 @@
-from dotenv import DotEnv
+from .dotenv import DotEnv
 from ruamel.yaml import YAML
-from semver import SemVer
+from .semver import SemVer
 from git import Repo
 import argparse
 
@@ -70,15 +70,19 @@ def git_tag(tag: str):
     git.create_tag(tag)
 
 
+class ReleaseException(Exception):
+    pass
+
+
 def enforce_snapshot_version(curr_ver):
     if curr_ver.extra != "-SNAPSHOT":
-        raise Exception(f"Release only allowed on snapshot versions, current version is {curr_ver}.")
+        raise ReleaseException(f"Release only allowed on snapshot versions, current version is {curr_ver}.")
 
 
 def enforce_master_branch_or_release_branch():
     git = Repo()
     if str(git.active_branch) != "master" and not str(git.active_branch).startswith("release/"):
-        raise Exception(f"Release only allowed from master or release/<ver>, current branch is {git.active_branch}.")
+        raise ReleaseException(f"Release only allowed from master or release/<ver>, current branch is {git.active_branch}.")
 
 
 def parse_cmdline() -> argparse.Namespace:
@@ -142,4 +146,8 @@ def release():
     print(f"Released {release_ver}! To commit, do: git push; git push origin {release_ver}")
 
 
-release()
+try:
+    release()
+except ReleaseException as ex:
+    print(ex)
+    exit(-1)

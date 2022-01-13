@@ -1,2 +1,5 @@
 GitPython
 ruamel.yaml
+
+pytest
+pytest-mock

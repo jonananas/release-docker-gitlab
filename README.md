@@ -40,6 +40,15 @@ after cloning.
 pytest
 ```
 
+## Example
+
+To run the example, do
+```bash
+cp -r example-project-root ..
+cd ../example-project-root
+git init .
+python3 -m release_docker_gitlab
+
 ## TODO
 - Check https://www.freecodecamp.org/news/how-to-use-github-as-a-pypi-server-1c3b0d07db2/ to distribute via github.
 - How make release.sh installed as a command-line tool?

@@ -81,7 +81,7 @@ def enforce_snapshot_version(curr_ver):
 
 def enforce_master_branch_or_release_branch():
     git = Repo()
-    if str(git.active_branch) != "master" and not str(git.active_branch).startswith("release/"):
+    if str(git.active_branch) not in ["master", "main"] and not str(git.active_branch).startswith("release/"):
         raise ReleaseException(f"Release only allowed from master or release/<ver>, current branch is {git.active_branch}.")
 
 

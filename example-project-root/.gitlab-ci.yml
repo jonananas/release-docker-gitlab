@@ -1,0 +1,6 @@
+variables:
+  DOCKER_IMAGE_TAG: ${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}
+
+dummy-job:
+  script:
+    - "echo DOCKER_IMAGE_TAG: $DOCKER_IMAGE_TAG"

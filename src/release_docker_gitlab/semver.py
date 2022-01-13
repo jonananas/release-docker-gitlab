@@ -5,10 +5,10 @@ class SemVer:
     def __init__(self, version: str):
         # From https://github.com/npm/node-semver/issues/32
         semver = ("^([0-9]+)"                        # major
-                  "\.([0-9]+)"                       # minor
-                  "\.([0-9]+)"                       # patch
+                  "\\.([0-9]+)"                       # minor
+                  "\\.([0-9]+)"                       # patch
                   #                "(-[0-9]+-?)?",                     # build
-                  "([a-zA-Z-+][a-zA-Z0-9-\.:]*)?$")  # tag
+                  "([a-zA-Z-+][a-zA-Z0-9-\\.:]*)?$")  # tag
         # Regex from https://gist.github.com/jhorsman/62eeea161a13b80e39f5249281e17c39
         m = search(semver, version)
         self.major = int(m.group(1))

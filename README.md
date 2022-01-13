@@ -3,7 +3,7 @@
 
 ## Install and run
 
-```bash
+```sh
 pip3 install git+https://github.com/jonananas/release-docker-gitlab#egg=release-docker-gitlab
 release_docker_gitlab
 ```
@@ -12,7 +12,7 @@ release_docker_gitlab
 
 Release a GitLab Docker project that contains current version in the project root .env file as this:
 
-```bash
+```txt
 DOCKER_IMAGE_TAG=0.0.9-SNAPSHOT
 LAST_IMAGE_TAG=0.0.8
 ```
@@ -46,32 +46,29 @@ It makes sense to build releases automatically from pushed tags, for example bec
 
 ## Installing from repo
 
-```bash
+```sh
 pip3 install git+https://github.com/jonananas/release-docker-gitlab#egg=release-docker-gitlab
 ```
 
 ### Installing from source
 
-```bash
+```sh
 git clone https://github.com/jonananas/release-docker-gitlab
 pip3 install -e release-docker-gitlab
 ```
 
 ## Testing
 
-```bash
+```sh
 pytest
 ```
 
 ## Example
 
 To run the example, do
-```bash
+```sh
 cp -r example-project-root ..
 cd ../example-project-root
 git init .
 release_docker_gitlab
 ```
-
-## TODO
-- How make release.sh installed as a command-line tool?

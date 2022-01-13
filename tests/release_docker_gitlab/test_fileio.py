@@ -1,5 +1,5 @@
 from os import path, remove
-from fileio import FileIO
+from release_docker_gitlab.fileio import FileIO
 
 
 # Integration tests:

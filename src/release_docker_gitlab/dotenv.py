@@ -1,4 +1,4 @@
-from fileio import FileIO
+from .fileio import FileIO
 from typing import Dict
 
 

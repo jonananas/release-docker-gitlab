@@ -1,5 +1,5 @@
 from pytest import raises
-from semver import SemVer
+from release_docker_gitlab.semver import SemVer
 
 
 def test_has_major_minor_patch():

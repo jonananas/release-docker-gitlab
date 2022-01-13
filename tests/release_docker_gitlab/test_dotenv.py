@@ -1,5 +1,5 @@
-from fileio import FileIO
-from dotenv import DotEnv
+from release_docker_gitlab.fileio import FileIO
+from release_docker_gitlab.dotenv import DotEnv
 
 snapshot_contents = """PUBLIC_HOSTNAME=localhost
 DOCKER_IMAGE_TAG=0.0.2-SNAPSHOT

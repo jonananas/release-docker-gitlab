@@ -1,38 +1,61 @@
 
 # Release Docker GitLab
 
+## Install and run
+
 ```bash
+pip3 install git+https://github.com/jonananas/release-docker-gitlab#egg=release-docker-gitlab
 python3 -m release_docker_gitlab
 ```
 
-Release a GitLab Docker project, ie
-- From a branch with 
-    - DOCKER_IMAGE_TAG=x.y.z-SNAPSHOT in .env
-    - LAST_IMAGE_TAG=x.y.z in .env
-    - DOCKER_IMAGE_TAG=<any string> in .gitlab-ci.yml
-- Create a git tag x.y.z with
+## What does it do?
+
+Release a GitLab Docker project that contains current version in the project root .env file as this:
+
+```bash
+DOCKER_IMAGE_TAG=0.0.9-SNAPSHOT
+LAST_IMAGE_TAG=0.0.8
+```
+
+and a .gitlab-ci.yml as this:
+
+```yaml
+variables:
+  DOCKER_IMAGE_TAG: ${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}
+```
+
+it will
+
+- Assert that current branch is either `master`, `main`, or `release/...`
+- Propose next release tag x.y.z
+- Create a git commit with updated
     - DOCKER_IMAGE_TAG=x.y.z in .env
     - LAST_IMAGE_TAG=x.y.z in .env
     - DOCKER_IMAGE_TAG=x.y.z in .gitlab-ci.yml
-- Create a following commit with
+- Create git tag x.y.z
+- Create a another commit with
     - DOCKER_IMAGE_TAG=x.y.(z+1)-SNAPSHOT in .env
     - LAST_IMAGE_TAG=x.y.z in .env
     - DOCKER_IMAGE_TAG=<any string>
 
-You can also do
+
+## Why SNAPSHOT?
+
+The premise is that you have a docker project with immutable released tags, and mutable local tags ending with -SNAPSHOT.
+It makes sense to build releases automatically from pushed tags, for example because your image is used as a command line tool and not as a service on the cloud. (As opposed to continous deployment master)
+
+## Installing from repo
+
 ```bash
-python3 -m release_docker_gitlab --help
+pip3 install git+https://github.com/jonananas/release-docker-gitlab#egg=release-docker-gitlab
 ```
 
-## Installing
-
-Not available as whl yet, you need to 
+### Installing from source
 
 ```bash
-pip3 install -e .
+git clone https://github.com/jonananas/release-docker-gitlab
+pip3 install -e release-docker-gitlab
 ```
-
-after cloning.
 
 ## Testing
 
@@ -48,7 +71,7 @@ cp -r example-project-root ..
 cd ../example-project-root
 git init .
 python3 -m release_docker_gitlab
+```
 
 ## TODO
-- Check https://www.freecodecamp.org/news/how-to-use-github-as-a-pypi-server-1c3b0d07db2/ to distribute via github.
 - How make release.sh installed as a command-line tool?

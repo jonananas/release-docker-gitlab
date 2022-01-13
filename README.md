@@ -5,7 +5,7 @@
 
 ```bash
 pip3 install git+https://github.com/jonananas/release-docker-gitlab#egg=release-docker-gitlab
-python3 -m release_docker_gitlab
+release_docker_gitlab
 ```
 
 ## What does it do?
@@ -70,7 +70,7 @@ To run the example, do
 cp -r example-project-root ..
 cd ../example-project-root
 git init .
-python3 -m release_docker_gitlab
+release_docker_gitlab
 ```
 
 ## TODO

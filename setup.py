@@ -26,5 +26,8 @@ setuptools.setup(
         'GitPython>=3.1.14',
         'ruamel.yaml>=0.6.13'
     ],
+    entry_points={
+        'console_scripts': ['release-docker-gitlab=release_docker_gitlab.release:release'],
+    },
     python_requires=">=3.9",
 )

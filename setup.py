@@ -22,5 +22,9 @@ setuptools.setup(
     ],
     package_dir={"": "src"},
     packages=setuptools.find_packages(where="src"),
+    install_requires=[
+        'GitPython>=3.1.14',
+        'ruamel.yaml>=0.6.13'
+    ],
     python_requires=">=3.9",
 )

@@ -144,10 +144,3 @@ def release():
     set_gitlabci_ver(ci_tag)
     git_commit(f"Next snapshot version {next_ver}")
     print(f"Released {release_ver}! To commit, do: git push; git push origin {release_ver}")
-
-
-try:
-    release()
-except ReleaseException as ex:
-    print(ex)
-    exit(-1)

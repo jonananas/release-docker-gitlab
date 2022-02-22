@@ -35,7 +35,7 @@ def get_yaml_preserve_config() -> YAML:
     # Settings to preserve a typical .gitlab-ci.yml file as it was
     yaml = YAML()
     yaml.default_flow_style = False
-    yaml.indent(mapping=2, offset=2)
+    yaml.indent(mapping=2, sequence=4, offset=2)
     yaml.preserve_quotes = True
     yaml.width = 512
     return yaml

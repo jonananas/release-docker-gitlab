@@ -26,7 +26,7 @@ variables:
 
 it will
 
-- Assert that current branch is either `master`, `main`, or `release/...`
+- Assert that current branch is either `main`, `master`, or `release/...`
 - Propose next release tag x.y.z
 - Create a git commit with updated
     - DOCKER_IMAGE_TAG=x.y.z in .env
@@ -42,7 +42,7 @@ it will
 ## Why SNAPSHOT?
 
 The premise is that you have a docker project with immutable released tags, and mutable local tags ending with -SNAPSHOT.
-It makes sense to build releases automatically from pushed tags, for example because your image is used as a command line tool and not as a service on the cloud. (As opposed to continous deployment master)
+It makes sense to build releases automatically from pushed tags, for example because your image is used as a command line tool and not as a service on the cloud. (As opposed to continous deployment of main)
 
 ## Installing from repo
 

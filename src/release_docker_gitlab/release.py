@@ -79,10 +79,10 @@ def enforce_snapshot_version(curr_ver):
         raise ReleaseException(f"Release only allowed on snapshot versions, current version is {curr_ver}.")
 
 
-def enforce_master_branch_or_release_branch():
+def enforce_main_branch_or_release_branch():
     git = Repo()
-    if str(git.active_branch) not in ["master", "main"] and not str(git.active_branch).startswith("release/"):
-        raise ReleaseException(f"Release only allowed from master or release/<ver>, current branch is {git.active_branch}.")
+    if str(git.active_branch) not in ["main", "master"] and not str(git.active_branch).startswith("release/"):
+        raise ReleaseException(f"Release only allowed from main, master or release/<ver>, current branch is {git.active_branch}.")
 
 
 def parse_cmdline() -> argparse.Namespace:
@@ -114,7 +114,7 @@ def release():
     # TODO: https://packaging.python.org/tutorials/packaging-projects/
     # TODO: Add warning for something uncommitted?
     # TODO: Warn or update releaselog?
-    enforce_master_branch_or_release_branch()
+    enforce_main_branch_or_release_branch()
     curr_ver = get_env_ver()
     enforce_snapshot_version(curr_ver)
     if args.version is not None:

@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="release-docker-gitlab",
-    version="0.0.1-SNAPSHOT",
+    version="0.0.2",
     author="Jonas Andersson",
     author_email="jonananas@gmail.com",
     description="Release Docker GitLab projects",

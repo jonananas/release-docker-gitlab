@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "release-docker-gitlab"
-version = "0.0.2"
+version = "0.0.3"
 description = "Release Docker GitLab projects"
 authors = ["Jonas Andersson <jonananas@gmail.com>"]
 readme = "README.md"

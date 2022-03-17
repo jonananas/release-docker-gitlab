@@ -1,3 +1,5 @@
 __pycache__
 dist
 *egg-info
+# Since this is a cmdline tool, skip lockfile
+poetry.lock

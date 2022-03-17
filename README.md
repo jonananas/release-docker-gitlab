@@ -59,13 +59,28 @@ pip3 install -e release-docker-gitlab
 
 ## Testing
 
+This project uses [poetry](https://python-poetry.org/), in order to test in isolation, do
+
 ```sh
+poetry install
+poetry run pytest
+```
+
+An alternative if you do not want to use poetry (Pip supports editable installs from pyproject.toml files since [21.3](https://pip.pypa.io/en/stable/news/#v21-3))
+```sh
+pip3 install -e .
 pytest
+```
+
+## Building
+
+```bash
+poetry build
 ```
 
 ## Example
 
-To run the example, do
+To run the example
 ```sh
 cp -r example-project-root ..
 cd ../example-project-root

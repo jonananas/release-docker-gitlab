@@ -3,6 +3,8 @@ name = "release-docker-gitlab"
 version = "0.0.2"
 description = "Release Docker GitLab projects"
 authors = ["Jonas Andersson <jonananas@gmail.com>"]
+readme = "README.md"
+repository = "https://github.com/jonananas/release-docker-gitlab"
 license = "MIT"
 classifiers = [
     "Programming Language :: Python :: 3",

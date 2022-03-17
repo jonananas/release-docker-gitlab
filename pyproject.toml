@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "release-docker-gitlab"
+version = "0.0.2"
+description = "Release Docker GitLab projects"
+authors = ["Jonas Andersson <jonananas@gmail.com>"]
+readme = "README.md"
+repository = "https://github.com/jonananas/release-docker-gitlab"
+license = "MIT"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache License Version 2.0",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Build Tools",
+]
+
+
+[tool.poetry.dependencies]
+python = ">=3.9"
+GitPython = ">=3.1.14"
+"ruamel.yaml" = ">=0.17.21"
+pytest-mock = "3.6.1"
+
+[tool.poetry.scripts]
+release-docker-gitlab = 'release_docker_gitlab.release:release'
+
+[tool.poetry.dev-dependencies]
+pytest = "6.2.4"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
